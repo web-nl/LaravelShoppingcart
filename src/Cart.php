@@ -24,13 +24,6 @@ class Cart
     private $session;
 
     /**
-     * Instance of the event dispatcher.
-     * 
-     * @var \Illuminate\Contracts\Events\Dispatcher
-     */
-    private $events;
-
-    /**
      * Holds the current cart instance.
      *
      * @var string
@@ -41,12 +34,10 @@ class Cart
      * Cart constructor.
      *
      * @param \Illuminate\Session\SessionManager      $session
-     * @param \Illuminate\Contracts\Events\Dispatcher $events
      */
-    public function __construct(SessionManager $session, Dispatcher $events)
+    public function __construct(SessionManager $session)
     {
         $this->session = $session;
-        $this->events = $events;
 
         $this->instance(self::DEFAULT_INSTANCE);
     }
@@ -104,7 +95,7 @@ class Cart
 
         $content->put($cartItem->rowId, $cartItem);
         
-        $this->events->fire('cart.added', $cartItem);
+        event('cart.added', $cartItem);
 
         $this->session->put($this->instance, $content);
 
@@ -148,7 +139,7 @@ class Cart
             $content->put($cartItem->rowId, $cartItem);
         }
 
-        $this->events->fire('cart.updated', $cartItem);
+        event('cart.updated', $cartItem);
 
         $this->session->put($this->instance, $content);
 
@@ -169,7 +160,7 @@ class Cart
 
         $content->pull($cartItem->rowId);
 
-        $this->events->fire('cart.removed', $cartItem);
+        event('cart.removed', $cartItem);
 
         $this->session->put($this->instance, $content);
     }
@@ -360,7 +351,7 @@ class Cart
             'content' => serialize($content)
         ]);
 
-        $this->events->fire('cart.stored');
+        event('cart.stored');
     }
 
     /**
@@ -390,7 +381,7 @@ class Cart
             $content->put($cartItem->rowId, $cartItem);
         }
 
-        $this->events->fire('cart.restored');
+        event('cart.restored');
 
         $this->session->put($this->instance, $content);
 
