@@ -65,6 +65,13 @@ class CartItem implements Arrayable, Jsonable
     private $taxRate = 0;
 
     /**
+     * Dont include these keys in the rowId generation
+     *
+     * @var array
+     */
+    private $excludeOptionsFromRowID = ['discounts', 'coupon_allowed'];
+
+    /**
      * CartItem constructor.
      *
      * @param int|string $id
@@ -267,7 +274,7 @@ class CartItem implements Arrayable, Jsonable
         }
 
         if($attribute === 'tax') {
-            return $this->price * ($this->taxRate / 100);
+            return ($this->price / ($this->taxRate + 100)) * $this->taxRate;
         }
         
         if($attribute === 'taxTotal') {
@@ -329,6 +336,14 @@ class CartItem implements Arrayable, Jsonable
      */
     protected function generateRowId($id, array $options)
     {
+        if (!empty($this->excludeOptionsFromRowID)) {
+            foreach($this->excludeOptionsFromRowID as $exclude) {
+                if (isset($options[$exclude])) {
+                    unset($options[$exclude]);
+                }
+            }
+        }
+
         ksort($options);
 
         return md5($id . serialize($options));
