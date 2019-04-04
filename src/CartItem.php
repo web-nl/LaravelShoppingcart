@@ -266,7 +266,7 @@ class CartItem implements Arrayable, Jsonable
         }
         
         if($attribute === 'subtotal') {
-            return round($this->qty * $this->price, 2);
+            return $this->qty * $this->price;
         }
         
         if($attribute === 'total') {
