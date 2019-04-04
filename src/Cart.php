@@ -233,7 +233,7 @@ class Cart
             return $total + ($cartItem->qty * $cartItem->priceTax);
         }, 0);
 
-        return $this->numberFormat($total, $decimals, $decimalPoint, $thousandSeperator);
+        return $total;
     }
 
     /**
@@ -252,7 +252,7 @@ class Cart
             return $tax + ($cartItem->qty * $cartItem->tax);
         }, 0);
 
-        return $this->numberFormat($tax, $decimals, $decimalPoint, $thousandSeperator);
+        return $tax;
     }
 
     /**
@@ -271,7 +271,7 @@ class Cart
             return $subTotal + ($cartItem->qty * $cartItem->price);
         }, 0);
 
-        return $this->numberFormat($subTotal, $decimals, $decimalPoint, $thousandSeperator);
+        return $subTotal;
     }
 
     /**
