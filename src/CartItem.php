@@ -69,7 +69,7 @@ class CartItem implements Arrayable, Jsonable
      *
      * @var array
      */
-    private $excludeOptionsFromRowID = ['discounts', 'coupon_allowed'];
+    private $excludeOptionsFromRowID = ['discounts', 'coupon_allowed', 'subscription'];
 
     /**
      * CartItem constructor.
